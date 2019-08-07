@@ -18,16 +18,21 @@ async function request(url, opt, timeout = 10) {
   try {
     return await request.requester(param.options);
   } catch (e) {
-    if (param.timeout > 0) return await request(param.options, param.timeout - 1);
+    if (e.name === 'StatusCodeError') {
+      throw e;
+    }
+    else if (param.timeout > 0) {
+      return await request(param.options, param.timeout - 1);
+    }
     throw e;
   }
 }
 function verbFunc(verb) {
   verb = verb.toUpperCase();
-  return function verbWrap(url, options) {
-    const param = initParams(url, options);
+  return function verbWrap(url, options, timeout) {
+    const param = initParams(url, options, timeout);
     param.options.method = verb;
-    return request(param.options);
+    return request(param.options, param.timeout);
   };
 }
 // define like this to please codeintel/intellisense IDEs
