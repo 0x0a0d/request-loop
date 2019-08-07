@@ -19,3 +19,7 @@ request.get('https://wtfismyip.com/headers', {
     }
 }).then(body=>console.log(body)).catch(console.error);
 ```
+
+# Function
+
+```function request(url, options, retryTimes = 10);```
