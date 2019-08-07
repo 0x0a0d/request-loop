@@ -2,7 +2,7 @@ const Request = require('request-promise-native');
 
 function initParams(url, options, timeout) {
   if (typeof url === 'object') {
-    timeout = options || 10;
+    timeout = options == null ? 10 : options;
     options = url;
   } else {
     options = options || {};
