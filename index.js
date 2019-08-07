@@ -18,7 +18,7 @@ async function request(url, opt, timeout = 10) {
   try {
     return await request.requester(param.options);
   } catch (e) {
-    if (timeout > 0) return await request(param.options, param.timeout - 1);
+    if (param.timeout > 0) return await request(param.options, param.timeout - 1);
     throw e;
   }
 }
