@@ -1,0 +1,24 @@
+{
+  "name": "request-loop",
+  "version": "1.0.0",
+  "description": "request with retry-loop when error",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "request",
+    "loop",
+    "promise"
+  ],
+  "author": "0x0a0d",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0x0a0d/request-loop"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  }
+}
