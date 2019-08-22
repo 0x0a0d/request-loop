@@ -7,7 +7,7 @@ Auto retry request (default up to 10 times) when error
 
 ```js
 const Request = require('request-loop');
-const request = Request.defaults({
+const request = new Request.defaults({
     headers: {
         key: 'Should show with key'
     }
