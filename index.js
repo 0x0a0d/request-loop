@@ -29,7 +29,7 @@ module.exports = function requestLoop() {
       }
       else if (param.timeout > 0) {
         return new Promise((resolve, reject) => {
-          process.nextTick(()=>{
+          setImmediate(()=>{
             request(param.options, param.timeout - 1)
               .then(resolve).catch(reject);
           })
