@@ -28,13 +28,7 @@ module.exports = function requestLoop() {
         throw e;
       }
       else if (param.timeout > 0) {
-        return new Promise((resolve, reject) => {
-          setImmediate(()=>{
-            request(param.options, param.timeout - 1)
-              .then(resolve).catch(reject);
-          })
-        });
-        // return await request(param.options, param.timeout - 1);
+        return await request(param.options, param.timeout - 1);
       }
       throw e;
     }
