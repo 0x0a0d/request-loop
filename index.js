@@ -26,8 +26,9 @@ module.exports = function requestLoop() {
     } catch (e) {
       if (e.name === 'StatusCodeError') {
         throw e;
-      }
-      else if (param.timeout > 0) {
+      } else if (e.name === 'TransformError') {
+        throw e;
+      } else if (param.timeout > 0) {
         return await request(param.options, param.timeout - 1);
       }
       throw e;
@@ -52,7 +53,7 @@ module.exports = function requestLoop() {
   request['delete'] = verbFunc('delete');
   request.requester = Request;
   request.defaults = function(options) {
-    request.requester = request.requester.defaults(options);
+    request.requester = Request.defaults(options, request.requester);
     return request;
   };
   return request;
