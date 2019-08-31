@@ -1,8 +1,8 @@
 const Request = require('request-promise-native');
 
-function initParams(url, options, timeout) {
+function initParams(url, options, retryTimes) {
   if (typeof url === 'object') {
-    timeout = options == null ? 10 : options;
+    retryTimes = options == null ? 10 : options;
     options = url;
   } else {
     options = options || {};
@@ -10,26 +10,28 @@ function initParams(url, options, timeout) {
   }
   return {
     options,
-    timeout
+    retryTimes
   }
 }
 
-
-module.exports = function requestLoop() {
+module.exports = function requestLoop(_requester) {
   if (this.constructor !== requestLoop) {
-    return new requestLoop();
+    return new requestLoop(_requester);
   }
-  async function request(url, opt, timeout = 10) {
-    const param = initParams(url, opt, timeout);
+  if (_requester == null) {
+    _requester = Request;
+  }
+  async function request(url, opt, retryTimes = 10) {
+    const param = initParams(url, opt, retryTimes);
     try {
-      return await request.requester(param.options);
+      return await _requester(param.options);
     } catch (e) {
       if (e.name === 'StatusCodeError') {
         throw e;
       } else if (e.name === 'TransformError') {
         throw e;
-      } else if (param.timeout > 0) {
-        return await request(param.options, param.timeout - 1);
+      } else if (param.retryTimes > 0) {
+        return await request(param.options, param.retryTimes - 1);
       }
       throw e;
     }
@@ -39,7 +41,7 @@ module.exports = function requestLoop() {
     return function verbWrap(url, options, timeout) {
       const param = initParams(url, options, timeout);
       param.options.method = verb;
-      return request(param.options, param.timeout);
+      return request(param.options, param.retryTimes);
     };
   }
 // define like this to please codeintel/intellisense IDEs
@@ -51,10 +53,10 @@ module.exports = function requestLoop() {
   request.patch = verbFunc('patch');
   request.del = verbFunc('delete');
   request['delete'] = verbFunc('delete');
-  request.requester = Request;
+  // request.requester = Request;
   request.defaults = function(options) {
-    request.requester = Request.defaults(options, request.requester);
-    return request;
+    const requester = _requester.defaults(options);
+    return new requestLoop(requester);
   };
   return request;
 };
