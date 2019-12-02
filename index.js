@@ -54,7 +54,6 @@ function requestLoop(_requester) {
   request.del = verbFunc('delete');
   request['delete'] = verbFunc('delete');
 
-  request.jar = Request.jar;
   // request.requester = Request;
   request.defaults = function(options) {
     const requester = _requester.defaults(options);
