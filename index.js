@@ -14,7 +14,7 @@ function initParams(url, options, retryTimes) {
   }
 }
 
-module.exports = function requestLoop(_requester) {
+function requestLoop(_requester) {
   if (this.constructor !== requestLoop) {
     return new requestLoop(_requester);
   }
@@ -62,3 +62,7 @@ module.exports = function requestLoop(_requester) {
   };
   return request;
 };
+
+requestLoop.jar = Request.jar;
+
+module.exports = requestLoop;
