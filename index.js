@@ -53,6 +53,8 @@ module.exports = function requestLoop(_requester) {
   request.patch = verbFunc('patch');
   request.del = verbFunc('delete');
   request['delete'] = verbFunc('delete');
+
+  request.jar = Request.jar;
   // request.requester = Request;
   request.defaults = function(options) {
     const requester = _requester.defaults(options);
