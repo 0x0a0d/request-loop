@@ -14,6 +14,16 @@ function initParams(url, options, retryTimes) {
   }
 }
 
+function handleError(e) {
+  if (e.name === 'StatusCodeError') {
+    return false;
+  } else if (e.name === 'TransformError') {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 function requestLoop(_requester) {
   if (this.constructor !== requestLoop) {
     return new requestLoop(_requester);
@@ -26,11 +36,8 @@ function requestLoop(_requester) {
     try {
       return await _requester(param.options);
     } catch (e) {
-      if (e.name === 'StatusCodeError') {
-        throw e;
-      } else if (e.name === 'TransformError') {
-        throw e;
-      } else if (param.retryTimes > 0) {
+      if (!requestLoop.handleError(e, param.retryTimes)) throw e;
+      else if (param.retryTimes > 0) {
         return await request(param.options, param.retryTimes - 1);
       }
       throw e;
@@ -63,5 +70,6 @@ function requestLoop(_requester) {
 };
 
 requestLoop.jar = Request.jar;
+requestLoop.handleError = handleError;
 
 module.exports = requestLoop;
