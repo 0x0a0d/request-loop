@@ -1,6 +1,6 @@
 {
   "name": "request-loop",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "request with retry-loop when error",
   "main": "index.js",
   "scripts": {
