@@ -23,3 +23,9 @@ request.get('https://wtfismyip.com/headers', {
 # Function
 
 ```function request(url, options, retryTimes = 10);```
+
+##Jar
+```Request.jar```
+
+##handleError
+```Request.handleError = function(e, remainRetryTimes)```
